@@ -32,24 +32,13 @@ class ManipularDataBase:
         else:
             return False
     
-    def criarDataBase(self, nome_data_base) -> bool:
+    def criarDataBase(self) -> bool:
+        nome_data_base = "TP3-GRADI"
         nome_documento_dados = "dados.xml"
         nome_documento_indices = "indices.xml"
 
-        # Criar a raiz do documento
-        raiz_documento_dados = ET.Element("filmes")
-        # Criar uma representação de string com formatação
-        xml_documento_dados = ET.tostring(raiz_documento_dados, encoding="unicode")
-        xml_documento_dados = minidom.parseString(xml_documento_dados)
-        xml_documento_dados = xml_documento_dados.toprettyxml(indent="    ")  # Especifica a quantidade de espaços para a indentação
-
-        # Criar a raiz do documento
-        raiz_documento_indices = ET.Element("indices")
-        # Criar uma representação de string com formatação
-        xml_documento_indices = ET.tostring(raiz_documento_indices, encoding="unicode")
-        xml_documento_indices = minidom.parseString(xml_documento_indices)
-        xml_documento_indices = xml_documento_indices.toprettyxml(indent="    ")  # Especifica a quantidade de espaços para a indentação
-
+        xml_dados = """<filmes></filmes>"""
+        xml_indices = """<indices></indices>"""
 
         try:
             session = self.conectarDataBase()
@@ -59,8 +48,8 @@ class ManipularDataBase:
             else:
                 session.execute(f"CREATE DB {nome_data_base}")
                 session.execute(f"OPEN {nome_data_base}")
-                session.add(nome_documento_dados, xml_documento_dados)
-                session.add(nome_documento_indices, xml_documento_indices)
+                session.add(nome_documento_dados, xml_dados)
+                session.add(nome_documento_indices, xml_indices)
                 self.fecharDataBase(session)
                 return True
         except Exception as erro:
@@ -68,4 +57,43 @@ class ManipularDataBase:
             print(f"Mensagem de erro: {str(erro)}")
             self.fecharDataBase(session)
             return False
+
+    def inserirFilmeDataBase(self, dados_filme) -> bool:
+        nome_data_base = "TP3-GRADI"
+        xml_doc_name = "dados.xml"
+        xml_filme = f"""
+        <filme id='{dados_filme["id"]}'>
+            <titulo>{dados_filme["titulo"]}</titulo>
+            <generos>{''.join([f'<genero id="{genero["id"]}">{genero["name"]}</genero>' for genero in dados_filme["generos"]])}</generos>
+            <orcamento>{dados_filme["orcamento"]}</orcamento>
+            <receita>{dados_filme["receita"]}</receita>
+            <data_lancamento>{dados_filme["data_lancamento"]}</data_lancamento>
+            <tempo_duracao>{dados_filme["tempo_duracao"]}</tempo_duracao>
+            <slogan>{dados_filme["slogan"]}</slogan>
+            <popularidade>{dados_filme["popularidade"]}</popularidade>
+            <total_votos>{dados_filme["total_votos"]}</total_votos>
+            <media_votos>{dados_filme["media_votos"]}</media_votos>
+            <poster_path>{dados_filme["poster_path"]}</poster_path>
+            <sinopse>{dados_filme["sinopse"]}</sinopse>
+        </filme>
+        """ 
+
+        try:
+            session = self.conectarDataBase()
+            query = session.query(f'''
+                let $db := "{nome_data_base}"
+                let $doc := db:open($db, "{xml_doc_name}")
+                let $novoFilme := {xml_filme}
+                return
+                    insert node $novoFilme as last into $doc//filmes
+            ''')
+            result = query.execute()
         
+            return True
+        except Exception as erro:
+            print(f"Tipo de exceção: {type(erro).__name__}")
+            print(f"Mensagem de erro: {str(erro)}")
+            self.fecharDataBase(session)
+            return False
+        
+

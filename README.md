@@ -1,5 +1,7 @@
 <h1>GRADI - Trabalho Prático 03</h1>
 
+<img src="assets/logo.png" width="40%" ></img>
+
 <h3>Desenvolvedores</h3>
 
  - [Iury Martins](https://github.com/Iurymartins46)

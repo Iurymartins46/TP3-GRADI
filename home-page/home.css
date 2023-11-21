@@ -1,0 +1,68 @@
+/* Adapte conforme necessário */
+header {
+    background-color: #8a2496; /* Cor de fundo do header, se desejar */
+    padding: 20px; /* Espaçamento interno do header */
+    display: flex;
+    margin: 0;
+}
+
+img {
+    max-width: 180px; /* Garante que a imagem não ultrapasse a largura do contêiner pai */
+    height: auto; /* Mantém a proporção da imagem */
+}
+
+body{
+    margin: 0;
+}
+
+.menu {
+    position: fixed;
+    left: 0;
+    top: 115px;
+    width: 200px;
+    height: 100%;
+    background-color: rgb(242, 242, 242);
+    color: #ffffff;
+    padding: 20px;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu li {
+    margin-bottom: 10px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #f4c80d;
+}
+
+.content {
+    margin-left: 220px; /* Ajuste conforme a largura do menu + margem desejada */
+    padding: 20px;
+}
+
+.movies-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.movie {
+    box-sizing: border-box;
+    width: calc(33.33% - 20px); /* 33.33% para até 3 filmes por linha, descontando margens */
+    margin: 10px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.movie img {
+    max-width: 100%;
+    height: auto;
+}

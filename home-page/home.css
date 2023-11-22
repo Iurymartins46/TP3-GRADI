@@ -1,10 +1,24 @@
-/* Adapte conforme necessário */
+/*
 header {
     background-color: #8a2496; /* Cor de fundo do header, se desejar */
-    padding: 20px; /* Espaçamento interno do header */
-    display: flex;
+    /*padding: 20px; /* Espaçamento interno do header */
+    /*display: flex;
     margin: 0;
 }
+*/
+
+header {
+    background: #8a2496;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999px;
+    padding: 05px; /* Espaçamento interno do header */
+    display: flex;
+    margin: 0;
+    box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.5);
+ }
 
 img {
     max-width: 180px; /* Garante que a imagem não ultrapasse a largura do contêiner pai */
@@ -18,7 +32,7 @@ body{
 .menu {
     position: fixed;
     left: 0;
-    top: 115px;
+    top: 85px;
     width: 200px;
     height: 100%;
     background-color: rgb(242, 242, 242);
@@ -42,27 +56,27 @@ body{
 }
 
 .content {
-    margin-left: 220px; /* Ajuste conforme a largura do menu + margem desejada */
-    padding: 20px;
+    margin-left: 230px; /* Ajuste conforme a largura do menu + margem desejada */
+    padding: 80px;
 }
 
 .movies-list {
-    display: flex;
+    display: grid;
     flex-wrap: wrap;
     justify-content: space-around;
 }
 
 .movie {
     box-sizing: border-box;
-    width: calc(33.33% - 20px); /* 33.33% para até 3 filmes por linha, descontando margens */
-    margin: 10px;
-    padding: 10px;
+    width: calc(33.33% - 20px);
+    margin: 5px;
+    padding: 5px;
     cursor: pointer;
     text-align: center;
     border: 1px solid #ccc;
 }
 
 .movie img {
-    max-width: 100%;
+    max-width: 50%;
     height: auto;
 }

@@ -1,69 +1,91 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Função para fazer a requisição à API e exibir os filmes
-    function fetchMovies() {
-        const apiKey = '7fdd5a8f'; // Substitua pela sua chave da API OMDb
-        const apiUrl = `https://www.omdbapi.com/?s=avengers&apikey=${apiKey}`; // Exemplo: Filmes dos Vingadores
+// home.js
 
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => displayMovies(data.Search))
-            .catch(error => console.error('Erro ao buscar filmes:', error));
-    }
+const apiKey = '7fdd5a8f';
+const apiUrl = `https://www.omdbapi.com/?apikey=${apiKey}`;
 
-    // Função para exibir a lista de filmes
-    function displayMovies(movies) {
-        const moviesList = document.getElementById('movies-list');
-    
-        moviesList.innerHTML = '';
-    
-        if (movies && movies.length > 0) {
-            movies.forEach(movie => {
-                const poster = movie.Poster === 'N/A' ? 'sem-imagem.jpg' : movie.Poster;
-                const movieElement = document.createElement('div');
-                movieElement.classList.add('movie');
-                movieElement.innerHTML = `
-                    <img src="${poster}" alt="${movie.Title}" data-imdb-id="${movie.imdbID}">
-                    <p>${movie.Title}</p>
-                `;
-                moviesList.appendChild(movieElement);
-            });
-    
-            // Adiciona um evento de clique para cada pôster
-            const posters = document.querySelectorAll('.movie img');
-            posters.forEach(poster => {
-                poster.addEventListener('click', () => {
-                    const imdbID = poster.getAttribute('data-imdb-id');
-                    fetchMovieDetails(imdbID);
-                });
-            });
+// Função para buscar filmes na API
+async function searchMovies(searchTerm) {
+    try {
+        const response = await fetch(`${apiUrl}&s=${searchTerm}`);
+        const data = await response.json();
+
+        // Verifica se a resposta foi bem-sucedida
+        if (data.Response === 'True') {
+            displayMovies(data.Search);
         } else {
-            moviesList.innerHTML = 'Nenhum filme encontrado.';
+            console.error(data.Error);
+            displayErrorMessage(data.Error); // Adiciona uma função para exibir mensagens de erro
         }
+    } catch (error) {
+        console.error('Erro ao buscar filmes:', error);
+        displayErrorMessage('Erro ao buscar filmes. Tente novamente mais tarde.'); // Mensagem de erro genérica
     }
+}
 
-    // Função para buscar detalhes de um filme específico
-    function fetchMovieDetails(imdbID) {
-        const apiKey = 'sua-api-key';
-        const apiUrl = `http://www.omdbapi.com/?i=${imdbID}&apikey=${apiKey}`;
+// Função para exibir os pôsteres dos filmes na página
+function displayMovies(movies) {
+    const postersContainer = document.getElementById('posters');
 
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => displayMovieDetails(data))
-            .catch(error => console.error('Erro ao buscar detalhes do filme:', error));
+    // Limpa o conteúdo atual
+    postersContainer.innerHTML = '';
+
+    // Verifica se há filmes encontrados
+    if (movies && movies.length > 0) {
+        // Itera sobre a lista de filmes
+        movies.forEach(movie => {
+            const posterElement = document.createElement('div');
+            posterElement.classList.add('poster');
+
+            // Adiciona a imagem do pôster
+            if (movie.Poster !== 'N/A') {
+                const posterImage = document.createElement('img');
+                posterImage.src = movie.Poster;
+                posterImage.alt = movie.Title;
+                posterElement.appendChild(posterImage);
+            } else {
+                // Caso não tenha pôster, exibe um texto alternativo
+                const noPosterText = document.createElement('p');
+                noPosterText.textContent = 'Sem pôster disponível';
+                posterElement.appendChild(noPosterText);
+            }
+
+            // Adiciona o título do filme
+            const titleElement = document.createElement('p');
+            titleElement.textContent = movie.Title;
+            posterElement.appendChild(titleElement);
+
+            // Adiciona o ano de lançamento
+            const yearElement = document.createElement('p');
+            yearElement.textContent = movie.Year;
+            posterElement.appendChild(yearElement);
+
+            // Adiciona o elemento do pôster ao contêiner
+            postersContainer.appendChild(posterElement);
+        });
+    } else {
+        displayErrorMessage('Nenhum filme encontrado.'); // Mensagem quando não há resultados
     }
+}
 
-    // Função para exibir os detalhes do filme
-    function displayMovieDetails(movieDetails) {
-        const movieDetailsContainer = document.getElementById('movie-details');
-        movieDetailsContainer.innerHTML = `
-            <h2>${movieDetails.Title}</h2>
-            <p><strong>Duração:</strong> ${movieDetails.Runtime}</p>
-            <p><strong>Sinopse:</strong> ${movieDetails.Plot}</p>
-            <!-- Adicione mais detalhes conforme necessário -->
-        `;
-        movieDetailsContainer.classList.remove('hidden');
+// Função para exibir mensagens de erro
+function displayErrorMessage(message) {
+    const errorElement = document.createElement('p');
+    errorElement.textContent = message;
+    errorElement.style.color = 'red';
+    
+    const postersContainer = document.getElementById('posters');
+    postersContainer.innerHTML = ''; // Limpa o conteúdo atual
+    postersContainer.appendChild(errorElement);
+}
+
+// Adiciona um evento de escuta para a tecla Enter na barra de busca
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        const searchTerm = searchInput.value;
+        searchMovies(searchTerm);
     }
-
-    // Inicia a aplicação
-    fetchMovies();
 });
+
+// Chama a função de busca inicial ao carregar a página
+searchMovies('avengers'); // Pode ser um termo padrão ou vazio, dependendo de sua preferência

@@ -3,41 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmes e Séries</title>
     <link rel="stylesheet" href="home.css">
-    <title>NomeFilme[fxShow]=""</title>
 </head>
-<body>
-    <header>
-        <img src="../assets/logo.png" alt="Descrição da imagem">
-        HOME
-    </header>
-    
-    <div class="menu">
-        <ul>
-            <li><a href="../movies-page/movies.html">FILMES</a></li>
-            <li><a href="../series-page/series.html">SÉRIES</a></li>
-            <li><a href="../profile-page/profile.html">PERFIL</a></li>
-        </ul>
-    </div>
-    
-    <div class="content">
-        <h1>Filmes em Destaque</h1>
+    <body>
 
-        <section class="grid1">
-            <div id="movies-list"></div>
-            <div id="movie-details" class="hidden">
-                
-            </div>
-        </section>
+        <header>
+            <img src="../assets/logo.png" alt="Logo">
+            <input type="text" id="searchInput" placeholder="Pesquisar por filmes/séries">
+        </header>
 
-        <!--
-        <div id="movies-list"></div>
-        <div id="movie-details" class="hidden">
-            
+        <div class="menu">
+            <ul>
+                <li><a href="../movies-page/movies.html">FILMES</a></li>
+                <li><a href="../series-page/series.html">SÉRIES</a></li>
+                <li><a href="../profile-page/profile.html">PERFIL</a></li>
+            </ul>
         </div>
-        -->
-    </div>
-    
-    <script src="home.js"></script>
-</body>
+
+        <div class="content">
+            <div class="posters" id="posters"></div>
+        </div>
+
+        <script src="home.js"></script>
+
+    </body>
 </html>

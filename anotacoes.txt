@@ -1,2 +1,3 @@
 cor roxa: #8a2496
-cor amarelo: #f4c80d
+cor roxa2: #3f1244
+cor amarela: #f4c80d

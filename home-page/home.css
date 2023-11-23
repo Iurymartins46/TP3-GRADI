@@ -1,14 +1,10 @@
-/*
-header {
-    background-color: #8a2496; /* Cor de fundo do header, se desejar */
-    /*padding: 20px; /* Espaçamento interno do header */
-    /*display: flex;
+body {
     margin: 0;
+    font-family: Arial, sans-serif;
 }
-*/
 
 header {
-    background: #8a2496;
+    background-color: #8a2496;
     position: fixed;
     top: 0;
     left: 0;
@@ -16,67 +12,75 @@ header {
     z-index: 999px;
     padding: 05px; /* Espaçamento interno do header */
     display: flex;
+    /*justify-content: space-between;
+    */
+    padding: 10px;
     margin: 0;
     box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.5);
- }
-
-img {
-    max-width: 180px; /* Garante que a imagem não ultrapasse a largura do contêiner pai */
-    height: auto; /* Mantém a proporção da imagem */
+    text-align: center;
 }
 
-body{
-    margin: 0;
+header img {
+    max-width: 180px;
+    height: auto;
+}
+
+#searchInput {
+    width: 150px;
+    max-height: 5px; /* Reduz a largura da barra de busca */
+    padding: 5px; /* Ajusta o espaçamento interno da barra de busca */
+    margin-top: auto;
+    display: flex;
+    margin-bottom: auto;
+    margin-left:auto;
+    margin-right: 5rem;
 }
 
 .menu {
-    position: fixed;
+    width: 250px;
+    top: 95px;
     left: 0;
-    top: 85px;
     width: 200px;
     height: 100%;
-    background-color: rgb(242, 242, 242);
-    color: #ffffff;
-    padding: 20px;
-}
-
-.menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.menu li {
-    margin-bottom: 10px;
+    background-color: #3f1244;
+    position: fixed;
+    overflow-x: hidden;
+    padding-top: 20px;
 }
 
 .menu a {
+    padding: 15px 20px;
     text-decoration: none;
+    font-size: 18px;
     color: #f4c80d;
+    display: block;
+}
+
+.menu a:hover {
+    background-color: #8a2496;
 }
 
 .content {
-    margin-left: 230px; /* Ajuste conforme a largura do menu + margem desejada */
-    padding: 80px;
+    margin-left: 250px;
+    padding-top: 10rem;
+    padding-right: 10rem;
 }
 
-.movies-list {
-    display: grid;
+.posters {
+    display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
 }
 
-.movie {
-    box-sizing: border-box;
+.poster {
     width: calc(33.33% - 20px);
-    margin: 5px;
+    margin: 0.2rem;
     padding: 5px;
     cursor: pointer;
     text-align: center;
-    border: 1px solid #ccc;
+    border: 1px solid #ccc
 }
 
-.movie img {
-    max-width: 50%;
+.poster img {
+    max-width: 80%;
     height: auto;
 }

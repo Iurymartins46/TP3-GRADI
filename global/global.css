@@ -65,22 +65,3 @@ header img {
     padding-top: 10rem;
     padding-right: 10rem;
 }
-
-.posters {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.poster {
-    width: calc(33.33% - 20px);
-    margin: 0.2rem;
-    padding: 5px;
-    cursor: pointer;
-    text-align: center;
-    border: 1px solid #ccc
-}
-
-.poster img {
-    max-width: 80%;
-    height: auto;
-}

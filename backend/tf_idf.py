@@ -1,10 +1,5 @@
 import math
 
-"""num_vezes que os termos aparecem em cada doc d V
-   total palavras no doc d V
-   total documentos no corpus V
-   num de doc que contém o termo V """
-
 def calcular_tfidf(frase, indice_invertido):
     # Dicionário para armazenar o TF de cada palavra na frase por documento
     tf = {}

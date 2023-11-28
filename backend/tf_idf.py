@@ -92,6 +92,16 @@ def calcular_tfidf(frase, indice_invertido):
 
     """print(idf)"""
 
+    #calculando o TF-IDF para cada documento
+    resultado = {}
+
+    for doc_id, tf_palavras in tf.items():
+        resultado[doc_id] = {}
+        for palavra, tf_valor in tf_palavras:
+            resultado[doc_id][palavra] = tf_valor * idf.get(palavra, 0)
+
+    print(resultado)
+
 # Exemplo de uso com chaves tendo diferentes números de valores
 indice_invertido = {
     'palavra1': [(1, 5), (2, 8)],

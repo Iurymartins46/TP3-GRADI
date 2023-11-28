@@ -22,7 +22,8 @@ class IndiceInvertido:
             return self.invIndex[word][:]
         else:
             return []
-
+        
+"""
 # Substitua pelos documentos que contêm as sinopses dos filmes
 titles = ["Um dois tres quatro um",
           "cinco um",
@@ -45,4 +46,4 @@ xml_dict = {"indiceInvertido": {"sentencas": sentencas_entries}}
 with open("person.xml", "w") as xml_file:
     xmltodict.unparse(xml_dict, output=xml_file, pretty=True)
 
-print("Conversão concluída.")
+print("Conversão concluída.")"""

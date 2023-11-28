@@ -68,72 +68,31 @@ class ManipularDataBase:
             return False
         
     
-    def inserirIndice(self,arraySinopses) -> bool:
-            
+    def inserirIndice(self,indiceInvertido) -> bool:
             nome_data_base = "TP3-GRADI"
-            xml_doc_name = "indiceInvertido.xml"
-            index = IndiceInvertido(arraySinopses)
-            print(index.invIndex)
-
-            sentencas_entries = []
-
-            for word, positions in index.invIndex.items():
-                consolidated_positions = ', '.join([f"[{pos[0]}, {pos[1]}]" for pos in positions])
-                word_entry = {"@palavra": word, "#text": consolidated_positions}
-                sentencas_entries.append(word_entry)
-
-            # Adiciona um elemento "sentencas" que envolve todas as entradas
-            xml_dict = {"indiceInvertido": {"sentencas": sentencas_entries}}
-
-            # Abre o arquivo XML para escrita
-            with open("person.xml", "w") as xml_file:
-                xmltodict.unparse(xml_dict, output=xml_file, pretty=True)
-
-            with open("person.xml", "r") as xml_file:
-                xml_index = xml_file.read()
-
-            xml_index = xml_index.replace('<?xml version="1.0" encoding="utf-8"?>', '')
-
-        
+            xml_doc_name = "indices.xml"
             try:
                 session = self.conectarDataBase()
-
-                # Verificar se o nó indice já existe no documento
-                check_query = session.query(f'''
-                    let $db := "{nome_data_base}"
-                    let $doc := db:open($db, "{xml_doc_name}")
-                    return exists($doc//indice)
-                ''')
-
-                if not check_query.execute():
-                    # Se o nó indice não existir, crie-o
-                    create_query = session.query(f'''
-                        let $db := "{nome_data_base}"
-                        let $doc := db:open($db, "{xml_doc_name}")
-                        return
-                            insert node <indice/> as last into $doc
-                    ''')
-                    create_query.execute()
-
-                    # Agora, execute a consulta de inserção
+                for k, v in indiceInvertido.items():
+                    xml_index = f"""<sentenca palavra = '{k}'>{v}</sentenca>"""
                     insert_query = session.query(f'''
                         let $db := "{nome_data_base}"
                         let $doc := db:open($db, "{xml_doc_name}")
-                        let $novoIndice := {xml_file}
+                        let $novoIndice := {xml_index}
                         return
-                            insert node $novoIndice as last into $doc//indice
+                            insert node $novoIndice as last into $doc//indices
                     ''')
+                    print(xml_index)
                     result = insert_query.execute()
 
-                    xml_file.close()
-                    return True
+                return True
             except Exception as erro:
                 print(f"Tipo de exceção: {type(erro).__name__}")
                 print(f"Mensagem de erro: {str(erro)}")
                 self.fecharDataBase(session)
                 return False
 
-
+    
     def inserirFilmeDataBase(self, dados_filme) -> bool:
         nome_data_base = "TP3-GRADI"
         xml_doc_name = "dados.xml"
@@ -165,10 +124,6 @@ class ManipularDataBase:
                     insert node $novoFilme as last into $doc//filmes
             ''')
             result = query.execute()
-
-    
-            
-            self.inserirIndice(arraySinopses)
         
             return True
         except Exception as erro:

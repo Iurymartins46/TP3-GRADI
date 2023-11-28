@@ -89,3 +89,77 @@ searchInput.addEventListener('keypress', function (e) {
 
 // Chama a função de busca inicial ao carregar a página
 searchMovies('avengers'); // Pode ser um termo padrão ou vazio, dependendo de sua preferência
+
+// Função para obter detalhes de um filme por título
+async function getMovieDetailsByTitle(movieTitle) {
+    try {
+        const response = await fetch(`${apiUrl}&t=${encodeURIComponent(movieTitle)}`);
+        const data = await response.json();
+
+        // Verifica se a resposta foi bem-sucedida
+        if (data.Response === 'True') {
+            displayMovieDetails(data);
+        } else {
+            console.error(data.Error);
+            displayErrorMessage(data.Error);
+        }
+    } catch (error) {
+        console.error('Erro ao obter detalhes do filme:', error);
+        displayErrorMessage('Erro ao obter detalhes do filme. Tente novamente mais tarde.');
+    }
+}
+
+
+// Função para exibir os detalhes do filme clicado
+function displayMovieDetails(movie) {
+    // Crie um elemento div para os detalhes do filme
+    const movieDetailsElement = document.createElement('div');
+    movieDetailsElement.classList.add('movie-details');
+
+    // Adicione o pôster
+    const posterImage = document.createElement('img');
+    posterImage.src = movie.Poster;
+    posterImage.alt = movie.Title;
+    movieDetailsElement.appendChild(posterImage);
+
+    // Adicione o nome, resumo, tempo de duração, data de lançamento e gêneros
+    const titleElement = document.createElement('h2');
+    titleElement.textContent = movie.Title;
+    movieDetailsElement.appendChild(titleElement);
+
+    const plotElement = document.createElement('p');
+    plotElement.textContent = movie.Plot;
+    movieDetailsElement.appendChild(plotElement);
+
+    const durationElement = document.createElement('p');
+    durationElement.textContent = `Duração: ${movie.Runtime}`;
+    movieDetailsElement.appendChild(durationElement);
+
+    const releaseDateElement = document.createElement('p');
+    releaseDateElement.textContent = `Data de Lançamento: ${movie.Released}`;
+    movieDetailsElement.appendChild(releaseDateElement);
+
+    const genresElement = document.createElement('p');
+    genresElement.textContent = `Gêneros: ${movie.Genre}`;
+    movieDetailsElement.appendChild(genresElement);
+
+    // Substitua o conteúdo atual pelos detalhes do filme
+    const postersContainer = document.getElementById('posters');
+    postersContainer.innerHTML = '';
+    postersContainer.appendChild(movieDetailsElement);
+}
+
+// Adicione um evento de clique para os pôsteres
+document.getElementById('posters').addEventListener('click', function (event) {
+    const clickedElement = event.target;
+
+    // Verifica se o clique ocorreu em um elemento com a classe 'poster' ou em seus filhos
+    const posterElement = clickedElement.closest('.poster');
+    if (posterElement) {
+        // Obtém o título do filme a partir do pôster
+        const movieTitle = posterElement.querySelector('img').alt;
+
+        // Chama a função para obter os detalhes do filme por título
+        getMovieDetailsByTitle(movieTitle);
+    }
+});

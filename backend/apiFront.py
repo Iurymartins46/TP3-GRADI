@@ -1,17 +1,17 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from manipularDataBase import ManipularDataBase
+from servicos import Servicos
 
 app = Flask(__name__)
 CORS(app) 
 
-"""
-@app.route('/criarUsuario', methods=['POST'])
-def criarUsuario():
+
+@app.route('/criarNovoUsuario', methods=['POST'])
+def criarNovoUsuario():
     email = request.json.get("email")
     senha = request.json.get("senha")
-    validacao = Validacao()
-    confirmacao,idUsr = validacao.criarContaNovoUsuario(email=email,senha=senha)
+    servicos = Servicos()
+    confirmacao,idUsr = servicos.criarNovoUsuario(email=email,senha=senha)
 
     data = {
         "confirmacao": confirmacao,
@@ -25,7 +25,7 @@ def criarUsuario():
 
 
     return data, 200
-
+"""
 
 @app.route('/fazerLogin', methods=['POST'])
 def realizarLogin():
@@ -50,7 +50,4 @@ def listarDiariosPorTag():
     return recebelista, 200
 """
 if __name__ == '__main__':
-    manipularDataBase = ManipularDataBase()
-    confirmacao_db = criarDatabase = manipularDataBase.criarDataBase()
     app.run(debug=True)
-    manipularDataBase = ManipularDataBase()

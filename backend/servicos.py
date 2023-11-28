@@ -1,6 +1,6 @@
 from manipularDataBase import ManipularDataBase
 from manipularApiTmdb import ManipularApiTmdb
-
+from indiceInvertido import IndiceInvertido
 class Servicos:
 
     # return True, usuario_id; Se as credenciais estiverem certas
@@ -40,6 +40,17 @@ class Servicos:
         dataBase = ManipularDataBase()
         api = ManipularApiTmdb()
         dataBase.criarDataBase()
+        teste = []
         for id in id_tmdb_filmes:
             dados = api.obter_informacoes_filme_por_id(id)
             dataBase.inserirFilmeDataBase(dados_filme=dados)
+            teste.append(dados['sinopse'])
+        #print(type(teste))
+        indice = IndiceInvertido(teste)
+
+       # print(type(indice.invIndex))
+        dataBase.inserirIndiceInvertido(indice.invIndex)
+
+
+
+Servicos.popularDataBase()

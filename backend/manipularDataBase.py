@@ -11,9 +11,6 @@ from indiceInvertido import IndiceInvertido
 import os
 from dotenv import load_dotenv
 
-
-arraySinopses = []
-
 class ManipularDataBase:
 
     def conectarDataBase(self):
@@ -45,9 +42,11 @@ class ManipularDataBase:
         nome_data_base = "TP3-GRADI"
         nome_documento_dados = "dados.xml"
         nome_documento_indices = "indices.xml"
+        nome_documento_usuarios = "usuarios.xml"
 
         xml_dados = """<filmes></filmes>"""
         xml_indices = """<indices></indices>"""
+        xml_usuarios = """<usuarios></usuarios>"""
 
         try:
             session = self.conectarDataBase()
@@ -59,6 +58,7 @@ class ManipularDataBase:
                 session.execute(f"OPEN {nome_data_base}")
                 session.add(nome_documento_dados, xml_dados)
                 session.add(nome_documento_indices, xml_indices)
+                session.add(nome_documento_usuarios, xml_usuarios)
                 self.fecharDataBase(session)
                 return True
         except Exception as erro:
@@ -67,17 +67,16 @@ class ManipularDataBase:
             self.fecharDataBase(session)
             return False
         
-    
     def inserirIndice(self,indiceInvertido) -> bool:
             nome_data_base = "TP3-GRADI"
-            xml_doc_name = "indices.xml"
+            nome_documento_indices = "indices.xml"
             try:
                 session = self.conectarDataBase()
-                for k, v in indiceInvertido.items():
-                    xml_index = f"""<sentenca palavra = '{k}'>{v}</sentenca>"""
+                for key, value in indiceInvertido.items():
+                    xml_index = f"""<sentenca palavra = '{key}'>{value}</sentenca>"""
                     insert_query = session.query(f'''
                         let $db := "{nome_data_base}"
-                        let $doc := db:open($db, "{xml_doc_name}")
+                        let $doc := db:open($db, "{nome_documento_indices}")
                         let $novoIndice := {xml_index}
                         return
                             insert node $novoIndice as last into $doc//indices
@@ -92,12 +91,13 @@ class ManipularDataBase:
                 self.fecharDataBase(session)
                 return False
 
-    
     def inserirFilmeDataBase(self, dados_filme) -> bool:
         nome_data_base = "TP3-GRADI"
-        xml_doc_name = "dados.xml"
+        nome_documento_dados = "dados.xml"
+        id_filme = self.proximoIdFilme()
         xml_filme = f"""
-        <filme id='{dados_filme["id"]}'>
+        <filme id='{id_filme}'>
+            <id_tmdb>{dados_filme["id"]}</id_tmdb>
             <titulo>{dados_filme["titulo"]}</titulo>
             <generos>{''.join([f'<genero id="{genero["id"]}">{genero["name"]}</genero>' for genero in dados_filme["generos"]])}</generos>
             <orcamento>{dados_filme["orcamento"]}</orcamento>
@@ -112,13 +112,12 @@ class ManipularDataBase:
             <sinopse>{dados_filme["sinopse"]}</sinopse>
         </filme>
         """ 
-        arraySinopses.append(dados_filme["sinopse"])
 
         try:
             session = self.conectarDataBase()
             query = session.query(f'''
                 let $db := "{nome_data_base}"
-                let $doc := db:open($db, "{xml_doc_name}")
+                let $doc := db:open($db, "{nome_documento_dados}")
                 let $novoFilme := {xml_filme}
                 return
                     insert node $novoFilme as last into $doc//filmes
@@ -131,11 +130,93 @@ class ManipularDataBase:
             print(f"Mensagem de erro: {str(erro)}")
             self.fecharDataBase(session)
             return False
-        
-        
 
+    def proximoIdFilme(self):
+        nome_data_base = "TP3-GRADI"
+        nome_documento_dados = "dados.xml"
+        try:
+            session = self.conectarDataBase()
+            query = session.query(f'''
+                let $db := "{nome_data_base}"
+                let $doc := db:open($db, "{nome_documento_dados}")
+                let $filmes := $doc//filmes/filme
+                let $ultimoFilme := $filmes[last()]
+                return xs:integer($ultimoFilme/@id)
+            ''')
+            result = query.execute()
+            self.fecharDataBase(session)
+            last_user_id = int(result) if result else -1
+            return last_user_id + 1
+        except Exception as erro:
+            print(f"Tipo de exceção: {type(erro).__name__}")
+            print(f"Mensagem de erro: {str(erro)}")
+            self.fecharDataBase(session)
+            return None
+    
+    def criarUsuario(self, email, senha):
+        nome_documento_usuarios = "usuarios.xml"
+        nome_data_base = "TP3-GRADI"
+        try:
+            id_usuario = self.proximoIdUsuario()
+            xml_usuario = f"""
+            <usuario id="{id_usuario}">
+                <email>{email}</email>
+                <senha>{senha}</senha>
+            </usuario>"""
+            session = self.conectarDataBase()
+            query = session.query(f'''
+            let $db := "{nome_data_base}"
+            let $doc := db:open($db, "{nome_documento_usuarios}")
+            let $novoUsuario := {xml_usuario}
+            return
+                insert node $novoUsuario as last into $doc//usuarios
+        ''')
+            result = query.execute()
+            self.fecharDataBase(session)
+            return True
+        except Exception as erro:
+            print(f"Tipo de exceção: {type(erro).__name__}")
+            print(f"Mensagem de erro: {str(erro)}")
+            self.fecharDataBase(session)
+            return False
 
-   
+    def proximoIdUsuario(self):
+        nome_documento_usuarios = "usuarios.xml"
+        nome_data_base = "TP3-GRADI"
+        try:
+            session = self.conectarDataBase()
+            query = session.query(f'''
+                let $db := "{nome_data_base}"
+                let $doc := db:open($db, "{nome_documento_usuarios}")
+                let $usuarios := $doc//usuarios/usuario
+                let $ultimoUsuario := $usuarios[last()]
+                return xs:integer($ultimoUsuario/@id)
+            ''')
+            result = query.execute()
+            self.fecharDataBase(session)
+            last_user_id = int(result) if result else -1
+            return last_user_id + 1
+        except Exception as erro:
+            print(f"Tipo de exceção: {type(erro).__name__}")
+            print(f"Mensagem de erro: {str(erro)}")
+            self.fecharDataBase(session)
+            return None
 
-            
-
+    def pesquisarUsuarioPorSenhaEmail(self, email, senha):
+        nome_documento_usuarios = "usuarios.xml"
+        nome_data_base = "TP3-GRADI"
+        try:
+            session = self.conectarDataBase()
+            query = session.query(f'''
+                let $db := "{nome_data_base}"
+                let $doc := db:open($db, "{nome_documento_usuarios}")
+                let $usuario := $doc//usuarios/usuario[./email = "{email}" and ./senha = "{senha}"]
+                return xs:integer($usuario/@id)
+            ''')
+            result = query.execute()
+            self.fecharDataBase(session)
+            return result
+        except Exception as erro:
+            print(f"Tipo de exceção: {type(erro).__name__}")
+            print(f"Mensagem de erro: {str(erro)}")
+            return None

@@ -1,5 +1,3 @@
-import json
-import xmltodict
 
 class IndiceInvertido:
     def __init__(self, docs):

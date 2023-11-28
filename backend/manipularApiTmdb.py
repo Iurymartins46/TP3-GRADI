@@ -4,7 +4,7 @@ api_key = '37536199a87edd04b278fadfa0e140d0'
 base_url = 'https://api.themoviedb.org/3/'
 language = 'pt-BR'
 
-class ManipularAPI:
+class ManipularApiTmdb:
      
     def obter_id_filme_por_nome(self, nome_filme):
         try:
@@ -38,13 +38,11 @@ class ManipularAPI:
             response_filme = requests.get(base_url + endpoint_filme, params=params_filme)
             if response_filme.status_code == 200:
                 informacoes_filme = response_filme.json()
-                """for chave, valor in informacoes_filme.items():
-                    print(f"Chave: {chave}, Valor: {valor}")"""
+
                 dados_filme = dict()
                 dados_filme["id"] = informacoes_filme["id"]
                 dados_filme["titulo"] = informacoes_filme["title"]
                 dados_filme["generos"] = informacoes_filme["genres"]
-                #dados_filme["genero"] = [item['name'] for item in informacoes_filme["genres"]]
                 dados_filme["orcamento"] = informacoes_filme["budget"]
                 dados_filme["receita"] = informacoes_filme["revenue"]
                 dados_filme["data_lancamento"] = informacoes_filme["release_date"]
@@ -54,6 +52,7 @@ class ManipularAPI:
                 dados_filme["total_votos"] = informacoes_filme["vote_count"]
                 dados_filme["media_votos"] = informacoes_filme["vote_average"]
                 dados_filme["sinopse"] = informacoes_filme["overview"]
+                
                 base_imagem_url = 'https://image.tmdb.org/t/p/'
                 tamanho_poster = 'w300'  # Pode ser ajustado conforme necessário
                 url_completo_poster = base_imagem_url + tamanho_poster + informacoes_filme["poster_path"]

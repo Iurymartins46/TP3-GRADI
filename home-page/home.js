@@ -112,6 +112,14 @@ async function getMovieDetailsByTitle(movieTitle) {
 
 // Função para exibir os detalhes do filme clicado
 function displayMovieDetails(movie) {
+    const postersContainer = document.getElementById('posters');
+    const movieDetailsContainer = document.getElementById('movieDetailsContainer');
+
+    // Remove os detalhes anteriores
+    while (movieDetailsContainer.firstChild) {
+        movieDetailsContainer.removeChild(movieDetailsContainer.firstChild);
+    }
+
     // Crie um elemento div para os detalhes do filme
     const movieDetailsElement = document.createElement('div');
     movieDetailsElement.classList.add('movie-details');
@@ -143,10 +151,8 @@ function displayMovieDetails(movie) {
     genresElement.textContent = `Gêneros: ${movie.Genre}`;
     movieDetailsElement.appendChild(genresElement);
 
-    // Substitua o conteúdo atual pelos detalhes do filme
-    const postersContainer = document.getElementById('posters');
-    postersContainer.innerHTML = '';
-    postersContainer.appendChild(movieDetailsElement);
+    // Adicione o elemento de detalhes ao contêiner
+    movieDetailsContainer.appendChild(movieDetailsElement);
 }
 
 // Adicione um evento de clique para os pôsteres

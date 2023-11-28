@@ -19,8 +19,12 @@
 }
 
 .movie-details {
-    text-align: center;
-    padding: 20px;
+    position: absolute;
+    top: 0;
+    width: 100%; /* Para ocupar a largura total do contêiner pai */
+    background-color: #f0f0f0; /* Cor de fundo de exemplo */
+    padding: 10px; /* Espaçamento interno de exemplo */
+    box-sizing: border-box; /* Evita que as bordas e o preenchimento aumentem o tamanho total */
 }
 
 .movie-details img {

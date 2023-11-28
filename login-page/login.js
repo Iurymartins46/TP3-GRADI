@@ -1,15 +1,18 @@
-function checkLogin() {
-    // Lógica de verificação de login simples.
+document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
 
-    // Aqui você pode adicionar lógica mais sofisticada, como fazer uma solicitação para um servidor para verificar as credenciais.
-    // Neste exemplo, vamos assumir que o login é bem-sucedido se ambos os campos não estiverem vazios.
-
-    if (email !== '' && password !== '') {
-        // Login bem-sucedido, redirecionar para a página home.
-        window.location.href = './home/home-page.html';
+    if (email === 'teste@gmail.com' && password === '123456') {
+        window.location.href = '../home-page/home.html';
+    } else if (email === 'admin@gmail.com' && password === '123456') {
+        window.location.href = '../admin-page/admin.html';
     } else {
-        alert('Credenciais inválidas. Por favor, tente novamente.');
+        alert('Usuário ou senha inválidos.');
     }
-}
+});
+
+document.getElementById('cadastrar').addEventListener('click', function() {
+    window.location.href = '../signup-page/signup.html';
+});

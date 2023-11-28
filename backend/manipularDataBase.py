@@ -67,29 +67,76 @@ class ManipularDataBase:
             self.fecharDataBase(session)
             return False
         
-    def inserirIndice(self,indiceInvertido) -> bool:
-            nome_data_base = "TP3-GRADI"
-            nome_documento_indices = "indices.xml"
-            try:
-                session = self.conectarDataBase()
-                for key, value in indiceInvertido.items():
-                    xml_index = f"""<sentenca palavra = '{key}'>{value}</sentenca>"""
-                    insert_query = session.query(f'''
-                        let $db := "{nome_data_base}"
-                        let $doc := db:open($db, "{nome_documento_indices}")
-                        let $novoIndice := {xml_index}
-                        return
-                            insert node $novoIndice as last into $doc//indices
-                    ''')
-                    print(xml_index)
-                    result = insert_query.execute()
+    def inserirIndiceInvertido(self,indiceInvertido) -> bool:
+        nome_data_base = "TP3-GRADI"
+        nome_documento_indices = "indices.xml"
+        try:
+            session = self.conectarDataBase()
+            for key, value in indiceInvertido.items():
+                xml_index = f"""<sentenca palavra = '{key}'>{value}</sentenca>"""
+                insert_query = session.query(f'''
+                    let $db := "{nome_data_base}"
+                    let $doc := db:open($db, "{nome_documento_indices}")
+                    let $novoIndice := {xml_index}
+                    return
+                        insert node $novoIndice as last into $doc//indices
+                ''')
+                result = insert_query.execute()
 
-                return True
-            except Exception as erro:
-                print(f"Tipo de exceção: {type(erro).__name__}")
-                print(f"Mensagem de erro: {str(erro)}")
-                self.fecharDataBase(session)
-                return False
+            return True
+        except Exception as erro:
+            print(f"Tipo de exceção: {type(erro).__name__}")
+            print(f"Mensagem de erro: {str(erro)}")
+            self.fecharDataBase(session)
+            return False
+        
+    def apagarIndiceInvertido(self):
+        nome_data_base = "TP3-GRADI"
+        nome_documento_indices = "indices.xml"
+        try:
+            session = self.conectarDataBase()
+            query = session.query(f'''
+                let $db := "{nome_data_base}"
+                let $doc := db:open($db, "{nome_documento_indices}")
+                return
+                    delete nodes $doc//indices/*
+            ''')
+            result = query.execute()
+            return True
+        except Exception as erro:
+            print(f"Tipo de exceção: {type(erro).__name__}")
+            print(f"Mensagem de erro: {str(erro)}")
+            self.fecharDataBase(session)
+            return False
+        
+    def recuperarIndiceInvertido(self):
+        nome_data_base = "TP3-GRADI"
+        nome_documento_indices = "indices.xml"
+        try:
+            session = self.conectarDataBase()
+            query = session.query(f'''
+                let $db := "{nome_data_base}"
+                let $doc := db:open($db, "{nome_documento_indices}")
+                for $sentencas in $doc//indices/sentenca
+                return $sentencas
+            ''')
+            result = query.execute()
+            self.fecharDataBase(session)
+
+            root = ET.fromstring("<root>" + result + "</root>")
+            sentencas = root.findall('sentenca')
+
+            # Iterar sobre os elementos <sentenca> e extrair  conteúdo
+            dados = {}
+            for sentenca in sentencas:
+                palavra = sentenca.get('palavra')
+                conteudo = sentenca.text
+                dados[f"{palavra}"] = eval(conteudo)
+            return dados
+        except Exception as erro:
+            print(f"Tipo de exceção: {type(erro).__name__}")
+            print(f"Mensagem de erro: {str(erro)}")
+            return None
 
     def inserirFilmeDataBase(self, dados_filme) -> bool:
         nome_data_base = "TP3-GRADI"

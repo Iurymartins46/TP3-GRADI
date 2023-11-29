@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <a href="../home-page/home.html"><img src="../assets/logo.png" alt="Logo"></a>
+        <a href="../home-page/home.html"><img src="../assets/logo4.png" alt="Logo"></a>
     </header>
     
     <div class="menu">
@@ -21,8 +21,50 @@
     
     <div class="content">
         <!-- Conteúdo do corpo da página -->
-        <h1>ADMIN PAGE!</h1>
-        <!-- Adicione mais conteúdo conforme necessário -->
+        <h1>Insira as informações do Filme</h1>
+        
+        
+        <form id="search-form">
+            <label for="title">Título:</label>
+            <input type="text" id="title" name="title" placeholder="Insira o título do filme" required>
+            
+            <label for="synopsis">Sinopse:</label>
+            <input type="text" id="synopsis" name="synopsis" placeholder="Insira a sinopse do filme" required>
+            
+            <label for="genres">Gêneros:</label>
+            <input type="text" id="genres" name="genres" placeholder="Insira os gêneros do filme" required>
+            
+            <label for="release_date">Data de Lançamento:</label>
+            <input type="text" id="release_date" name="release_date" placeholder="Insira a data de lançamento do filme" required>
+            
+            <label for="duration">Duração:</label>
+            <input type="text" id="duration" name="duration" placeholder="Insira a duração do filme" required>
+            
+            <label for="budget">Orçamento:</label>
+            <input type="text" id="budget" name="budget" placeholder="Insira o orçamento do filme" required>
+            
+            <label for="revenue">Receita:</label>
+            <input type="text" id="revenue" name="revenue" placeholder="Insira a receita do filme" required>
+            
+            <label for="slogan">Slogan:</label>
+            <input type="text" id="slogan" name="slogan" placeholder="Insira o slogan do filme" required>
+            
+            <label for="popularity">Popularidade:</label>
+            <input type="text" id="popularity" name="popularity" placeholder="Insira a popularidade do filme" required>
+            
+            <label for="total_votes">Total de Votos:</label>
+            <input type="text" id="total_votes" name="total_votes" placeholder="Insira o total de votos do filme" required>
+            
+            <label for="media_votes">Média de Votos:</label>
+            <input type="text" id="media_votes" name="media_votes" placeholder="Insira a média de votos do filme" required>
+            
+            <label for="poster_link">Link do Pôster:</label>
+            <input type="text" id="poster_link" name="poster_link" placeholder="Insira o link do pôster do filme" required>
+            
+            <button type="submit">Salvar Informações</button>
+        </form>
+
+
     </div>
     
     <script src="admin.js"></script>

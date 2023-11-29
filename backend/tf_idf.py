@@ -68,7 +68,8 @@ def calcular_tfidf(frase, indice_invertido):
     idf = {}
 
     for palavra, num_documentos in num_contem.items():
-        idf[palavra] = math.log(total_docs / (1 + num_documentos), 10)  # Adicionando 1 para evitar divisão por zero
+
+        idf[palavra] = abs(math.log(total_docs / (1 + num_documentos), 10))  # Adicionando 1 para evitar divisão por zero
 
     resultado = {}
 

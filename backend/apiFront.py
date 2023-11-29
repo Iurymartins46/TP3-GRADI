@@ -25,14 +25,14 @@ def criarNovoUsuario():
 
 
     return data, 200
-"""
 
-@app.route('/fazerLogin', methods=['POST'])
+
+@app.route('/realizarLogin', methods=['POST'])
 def realizarLogin():
     email = request.json.get("email")
     senha = request.json.get("senha")
-    validacao = Validacao()
-    confirmacao,idUsr = validacao.realizarLogin(email=email,senha=senha)
+    servicos = Servicos()
+    confirmacao,idUsr = servicos.realizarLogin(email=email,senha=senha)
     data = {
         "confirmacao": confirmacao,
         "usuario_id": idUsr 
@@ -40,7 +40,7 @@ def realizarLogin():
 
     return data, 200
 
-
+"""
 @app.route('/listarDiariosPorTag', methods=['GET'])
 def listarDiariosPorTag():
     manipularDataBase = ManipularDataBase()

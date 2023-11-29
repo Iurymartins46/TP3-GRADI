@@ -48,7 +48,7 @@ class ManipularDataBase:
         xml_usuarios = """<usuarios></usuarios>"""
 
         try:
-            session = self.conectarDataBase()
+            session = self.conectarDataBase()         
             if self.verificarExisteDataBase(session, nome_data_base):
                 self.fecharDataBase(session)
                 return True
@@ -197,6 +197,40 @@ class ManipularDataBase:
             print(f"Tipo de exceção: {type(erro).__name__}")
             print(f"Mensagem de erro: {str(erro)}")
             self.fecharDataBase(session)
+            return None
+
+    def recuperarFilmePorID(self, id):
+        nome_data_base = "TP3-GRADI"
+        nome_documento_dados = "dados.xml"
+        try:
+            session = self.conectarDataBase()
+            query = session.query(f'''
+                let $db := "{nome_data_base}"
+                let $doc := db:open($db, "{nome_documento_dados}")
+                for $filme in $doc//filmes/filme[@id = {id}]
+                return $filme
+            ''')
+            result = query.execute()
+            self.fecharDataBase(session)
+
+            # Iterar sobre os elementos <sentenca> e extrair  conteúdo
+            dados = {}
+            root = ET.fromstring(result)
+            for child in root:
+                if len(child) > 0:
+                    # Se o elemento tem filhos, crie um dicionário para ele
+                    dados[child.tag] = []
+                    for subchild in child:
+                        dados[child.tag].append(subchild.text)
+                else:
+                    # Se o elemento não tem filhos, apenas adicione ao dicionário
+                    dados[child.tag] = child.text
+            
+            return dados
+
+        except Exception as erro:
+            print(f"Tipo de exceção: {type(erro).__name__}")
+            print(f"Mensagem de erro: {str(erro)}")
             return None
     
     def criarUsuario(self, email, senha):

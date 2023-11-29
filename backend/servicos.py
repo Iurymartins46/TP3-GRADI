@@ -30,7 +30,7 @@ class Servicos:
             usuario_id = dataBase.proximoIdUsuario() - 1
             return True, usuario_id
         
-    def popularDataBase():
+    def popularDataBase(self):
         id_tmdb_filmes = [19995, 76600, 872585, 299054, 670292, 678512, 609681, 565770, 
                           695721, 268896, 601, 667538, 634649, 447365, 299536, 569094, 
                           315162, 354912, 577922, 122, 157336, 361743, 22, 588228, 
@@ -45,12 +45,7 @@ class Servicos:
             dados = api.obter_informacoes_filme_por_id(id)
             dataBase.inserirFilmeDataBase(dados_filme=dados)
             teste.append(dados['sinopse'])
-        #print(type(teste))
         indice = IndiceInvertido(teste)
 
        # print(type(indice.invIndex))
         dataBase.inserirIndiceInvertido(indice.invIndex)
-
-
-
-Servicos.popularDataBase()

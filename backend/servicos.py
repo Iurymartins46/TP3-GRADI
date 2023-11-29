@@ -1,10 +1,14 @@
 from manipularDataBase import ManipularDataBase
 from manipularApiTmdb import ManipularApiTmdb
 from indiceInvertido import IndiceInvertido
+from tf_idf import *
+
 import string
 from unidecode import unidecode
 import nltk
 from nltk.corpus import stopwords
+nltk.download('punkt')
+nltk.download('stopwords')
 
 class Servicos:
 
@@ -45,15 +49,19 @@ class Servicos:
         dataBase = ManipularDataBase()
         api = ManipularApiTmdb()
         dataBase.criarDataBase()
-        teste = []
+        teste = {}
         for id in id_tmdb_filmes:
             dados = api.obter_informacoes_filme_por_id(id)
             dataBase.inserirFilmeDataBase(dados_filme=dados)
             sinopse = dados['sinopse']
+            id_filme = dataBase.proximoIdFilme()-1
             sinopse = self.removerCaracteresEspeciais(sinopse)
             sinopse = self.removerStopwords(sinopse)
-            teste.append(sinopse)
-            print(id)
+            #inicializar a chave vazia para dps adicionar
+            teste[id_filme] = []
+            teste[id_filme].append(sinopse)
+            #print(id)
+
 
         indice = IndiceInvertido(teste)
 
@@ -79,3 +87,34 @@ class Servicos:
         texto_sem_stopwords = ' '.join(palavras_sem_stopwords)
         return texto_sem_stopwords
     
+    def pesquisarFilme(self, string):
+        dataBase = ManipularDataBase()
+        indice_invertido = dataBase.recuperarIndiceInvertido()
+        id_filmes = calcular_tfidf(string, indice_invertido)
+        dados = {}
+        dados["dados"] = []
+        for id in id_filmes:
+            filme = dataBase.recuperarFilmePorID(id)
+            dados["dados"].append(filme)
+        return dados
+    
+    def adicionarFilme(self, dados):
+        dataBase = ManipularDataBase()
+        dataBase.inserirFilmeDataBase(dados)
+        id_filme = dataBase.proximoIdFilme()
+        if(id_filme == None):
+            id_filme = 0
+        else:
+            id_filme -= 1
+        sinopse = dados['sinopse']
+        sinopse = self.removerCaracteresEspeciais(sinopse)
+        sinopse = self.removerStopwords(sinopse)
+        teste = {}
+        teste[id_filme] = []
+        teste[id_filme].append(sinopse)
+
+        indice = IndiceInvertido(teste)
+        dataBase.apagarIndiceInvertido()
+        confirmacao = dataBase.inserirIndiceInvertido(indice.invIndex)
+        return confirmacao
+

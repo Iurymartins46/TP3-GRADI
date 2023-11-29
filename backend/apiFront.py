@@ -44,11 +44,13 @@ def realizarLogin():
 @app.route('/pesquisarFilme', methods=['GET'])
 def pesquisarFilme():
     string = request.json.get("string")
-    recebelista = Servicos.pesquisarFilme(string=string)
+    servicos = Servicos()
+    recebelista = servicos.pesquisarFilme(string=string)
     return recebelista, 200
 
 @app.route('/adicionarFilme', methods=['POST'])
 def adicionarFilme():
+    servicos = Servicos()
     id = request.json.get("id")
     titulo = request.json.get("titulo")
     generos = request.json.get("generos")
@@ -66,7 +68,7 @@ def adicionarFilme():
     dicionario = dict() 
     dicionario ["id"] = id
     dicionario ["titulo"]= titulo
-    dicionario ["generos"] = {i: valor for i, valor in enumerate(generos)}
+    dicionario ["generos"] = [{'id': idx, 'name': genero} for idx, genero in enumerate(generos)]
     dicionario ["orcamento"]= orcamento
     dicionario ["receita"]= receita
     dicionario ["data_lancamento"]= data_lancamento
@@ -78,9 +80,10 @@ def adicionarFilme():
     dicionario ["poster_path"]= poster_path
     dicionario ["sinopse"]= sinopse
     
-    insereFilme = Servicos.adicionarFilme(dicionario)
-    
-    return insereFilme, 200
+    insereFilme = servicos.adicionarFilme(dicionario)
+    dados = {}
+    dados["confirmacao"] =  insereFilme
+    return dados, 200
 
 if __name__ == '__main__':
     app.run(debug=True)

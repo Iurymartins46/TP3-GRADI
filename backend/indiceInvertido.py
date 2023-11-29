@@ -1,14 +1,16 @@
-import json
+
 
 class IndiceInvertido:
     def __init__(self, docs):
         self.invIndex = {}
         self.root = docs
-        for i, t in enumerate(docs):
-            self.parse(i, t)
+        
+        
+        for key, value in docs.items():
+            self.parse(key, value)
 
     def parse(self, idoc, doc):
-        words = [w.lower() for w in doc.split(' ')]
+        words = [w.lower() for w in doc[0].split(' ')]
 
         for position, w in enumerate(words):
             if w in self.invIndex:

@@ -1,6 +1,11 @@
 from manipularDataBase import ManipularDataBase
 from manipularApiTmdb import ManipularApiTmdb
 from indiceInvertido import IndiceInvertido
+import string
+from unidecode import unidecode
+import nltk
+from nltk.corpus import stopwords
+
 class Servicos:
 
     # return True, usuario_id; Se as credenciais estiverem certas
@@ -44,8 +49,33 @@ class Servicos:
         for id in id_tmdb_filmes:
             dados = api.obter_informacoes_filme_por_id(id)
             dataBase.inserirFilmeDataBase(dados_filme=dados)
-            teste.append(dados['sinopse'])
+            sinopse = dados['sinopse']
+            sinopse = self.removerCaracteresEspeciais(sinopse)
+            sinopse = self.removerStopwords(sinopse)
+            teste.append(sinopse)
+            print(id)
+
         indice = IndiceInvertido(teste)
 
-       # print(type(indice.invIndex))
+        #print(type(indice.invIndex))
         dataBase.inserirIndiceInvertido(indice.invIndex)
+
+    def removerCaracteresEspeciais(self, texto):
+        texto_sem_acentuacao = unidecode(texto)
+        # Lista de caracteres que serão mantidos
+        caracteres_mantidos = string.ascii_letters + string.digits + ' ' + '-'
+        # Manter apenas os caracteres desejados
+        texto_final = ''.join(char for char in texto_sem_acentuacao if char in caracteres_mantidos)
+        return texto_final
+    
+    def removerStopwords(self, texto):
+        # Tokenize o texto em palavras
+        palavras = nltk.word_tokenize(texto, language='portuguese')
+        # Carregar a lista de stopwords em português
+        stopwords_pt = set(stopwords.words('portuguese'))
+        # Remover as stopwords
+        palavras_sem_stopwords = [palavra for palavra in palavras if palavra.lower() not in stopwords_pt]
+        # Recriar o texto sem stopwords
+        texto_sem_stopwords = ' '.join(palavras_sem_stopwords)
+        return texto_sem_stopwords
+    

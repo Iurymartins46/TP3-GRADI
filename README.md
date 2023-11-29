@@ -1,6 +1,6 @@
 <h1 align="center" >GRADI - Trabalho Prático 03
 <br>
- <img src="assets/logo.png" width="40%" ></img> </a>
+ <img src="assets/logo4.png" width="40%" ></img> </a>
 </h1>
 <h3>Desenvolvedores</h3>
 

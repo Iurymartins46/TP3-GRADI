@@ -1,6 +1,8 @@
 from manipularDataBase import ManipularDataBase
 from manipularApiTmdb import ManipularApiTmdb
 from indiceInvertido import IndiceInvertido
+from tf_idf import *
+
 import string
 from unidecode import unidecode
 import nltk
@@ -79,3 +81,22 @@ class Servicos:
         texto_sem_stopwords = ' '.join(palavras_sem_stopwords)
         return texto_sem_stopwords
     
+    def pesquisarFilme(self, string):
+        dataBase = ManipularDataBase()
+        indice_invertido = dataBase.recuperarIndiceInvertido()
+        id_filmes = calcular_tfidf(string, indice_invertido)
+        dados = {}
+        dados["dados"] = []
+        for id in id_filmes:
+            filme = dataBase.recuperarFilmePorID(id)
+            dados["dados"].append(filme)
+        return dados
+    
+    def adicionarFilme(self, dados):
+        dataBase = ManipularDataBase()
+        dataBase.inserirFilmeDataBase(dados)
+        id_filme = dataBase.proximoIdFilme() - 1
+        sinopse = dados['sinopse']
+        sinopse = self.removerCaracteresEspeciais(sinopse)
+        sinopse = self.removerStopwords(sinopse)
+

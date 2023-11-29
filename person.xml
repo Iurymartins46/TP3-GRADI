@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<indiceInvertido>
+	<sentencas palavra="jaime">[0, 0]</sentencas>
+	<sentencas palavra="reyes,">[0, 1]</sentencas>
+	<sentencas palavra="um">[0, 2], [0, 9], [0, 15]</sentencas>
+	<sentencas palavra="adolescente">[0, 3]</sentencas>
+	<sentencas palavra="de">[0, 4]</sentencas>
+	<sentencas palavra="origem">[0, 5]</sentencas>
+	<sentencas palavra="mexicana">[0, 6]</sentencas>
+	<sentencas palavra="que">[0, 7], [0, 12]</sentencas>
+	<sentencas palavra="encontra">[0, 8]</sentencas>
+	<sentencas palavra="artefato">[0, 10]</sentencas>
+	<sentencas palavra="alienígena">[0, 11]</sentencas>
+	<sentencas palavra="lhe">[0, 13]</sentencas>
+	<sentencas palavra="dá">[0, 14]</sentencas>
+	<sentencas palavra="exoesqueleto">[0, 16]</sentencas>
+	<sentencas palavra="mecanizado">[0, 17]</sentencas>
+	<sentencas palavra="e">[0, 18]</sentencas>
+	<sentencas palavra="poderes,">[0, 19]</sentencas>
+	<sentencas palavra="tornando-o">[0, 20]</sentencas>
+	<sentencas palavra="no">[0, 21]</sentencas>
+	<sentencas palavra="besouro">[0, 22]</sentencas>
+	<sentencas palavra="azul.">[0, 23]</sentencas>
+</indiceInvertido>

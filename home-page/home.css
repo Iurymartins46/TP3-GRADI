@@ -1,0 +1,38 @@
+
+.posters {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.poster {
+    width: calc(33.33% - 20px);
+    margin: 0.2rem;
+    padding: 5px;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid #ccc
+}
+
+.poster img {
+    max-width: 80%;
+    height: auto;
+}
+
+.movie-details {
+    position: absolute;
+    top: 0;
+    width: 100%; /* Para ocupar a largura total do contêiner pai */
+    background-color: #f0f0f0; /* Cor de fundo de exemplo */
+    padding: 10px; /* Espaçamento interno de exemplo */
+    box-sizing: border-box; /* Evita que as bordas e o preenchimento aumentem o tamanho total */
+}
+
+.movie-details img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.movie-details p {
+    margin: 5px 0;
+}

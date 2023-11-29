@@ -51,7 +51,7 @@ class Servicos:
         for id in id_tmdb_filmes:
             dados = api.obter_informacoes_filme_por_id(id)
             dataBase.inserirFilmeDataBase(dados_filme=dados)
-            sinopse = dados['sinopse']
+            sinopse = dados['sinopse'] + " " + dados["titulo"]
             id_filme = dataBase.proximoIdFilme()-1
             sinopse = self.removerCaracteresEspeciais(sinopse)
             sinopse = self.removerStopwords(sinopse)
@@ -87,6 +87,8 @@ class Servicos:
     
     def pesquisarFilme(self, string):
         dataBase = ManipularDataBase()
+        string = self.removerCaracteresEspeciais(string)
+        string = self.removerStopwords(string)
         indice_invertido = dataBase.recuperarIndiceInvertido()
         id_filmes = calcular_tfidf(string, indice_invertido)
         dados = {}
@@ -94,13 +96,15 @@ class Servicos:
         for id in id_filmes:
             filme = dataBase.recuperarFilmePorID(id)
             dados["dados"].append(filme)
+        if len(dados["dados"]) == 0:
+            return None
         return dados
     
     def adicionarFilme(self, dados):
         dataBase = ManipularDataBase()
         dataBase.inserirFilmeDataBase(dados)
         id_filme = dataBase.proximoIdFilme() - 1
-        sinopse = dados['sinopse']
+        sinopse = dados['sinopse']  + " " + dados["titulo"]
         sinopse = self.removerCaracteresEspeciais(sinopse)
         sinopse = self.removerStopwords(sinopse)
         teste = {}

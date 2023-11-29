@@ -45,15 +45,19 @@ class Servicos:
         dataBase = ManipularDataBase()
         api = ManipularApiTmdb()
         dataBase.criarDataBase()
-        teste = []
+        teste = {}
         for id in id_tmdb_filmes:
             dados = api.obter_informacoes_filme_por_id(id)
             dataBase.inserirFilmeDataBase(dados_filme=dados)
             sinopse = dados['sinopse']
+            id_filme = dataBase.proximoIdFilme()-1
             sinopse = self.removerCaracteresEspeciais(sinopse)
             sinopse = self.removerStopwords(sinopse)
-            teste.append(sinopse)
-            print(id)
+            #inicializar a chave vazia para dps adicionar
+            teste[id_filme] = []
+            teste[id_filme].append(sinopse)
+            #print(id)
+
 
         indice = IndiceInvertido(teste)
 

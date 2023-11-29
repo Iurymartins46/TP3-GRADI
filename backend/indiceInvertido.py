@@ -1,3 +1,4 @@
+import json
 
 class IndiceInvertido:
     def __init__(self, docs):

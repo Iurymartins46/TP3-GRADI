@@ -1,5 +1,6 @@
 from BaseXClient import BaseXClient
 import xml.etree.ElementTree as ET
+from xml.dom import minidom
 import sys
 sys.path.append('backend')
 
@@ -47,7 +48,7 @@ class ManipularDataBase:
         xml_usuarios = """<usuarios></usuarios>"""
 
         try:
-            session = self.conectarDataBase()
+            session = self.conectarDataBase()         
             if self.verificarExisteDataBase(session, nome_data_base):
                 self.fecharDataBase(session)
                 return True

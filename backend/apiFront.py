@@ -35,12 +35,11 @@ def realizarLogin():
     return data, 200
 
 
-@app.route('/pesquisarFilme', methods=['GET'])
-def pesquisarFilme():
-    string = request.json.get("string")
-    string = string.lower()
+@app.route('/pesquisarFilme/<string>', methods=['GET'])
+def pesquisarFilme(string):
+    pesquisa = string.lower()
     servicos = Servicos()
-    recebelista = servicos.pesquisarFilme(string=string)
+    recebelista = servicos.pesquisarFilme(pesquisa)
     print(recebelista)
 
     return recebelista, 200
@@ -65,10 +64,6 @@ def adicionarFilme():
     dicionario = dict() 
     dicionario ["id"] = id
     dicionario ["titulo"]= titulo
-    print(titulo)
-    print("------------------------------------------------------------")
-    print(generos)
-    print(titulo)
     dicionario ["generos"] = [{'id': idx, 'name': genero} for idx, genero in enumerate(generos)]
     dicionario ["orcamento"]= orcamento
     dicionario ["receita"]= receita

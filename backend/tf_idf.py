@@ -87,6 +87,7 @@ def calcular_tfidf(frase, indice_invertido):
     dados = dict(sorted(dados.items(), key=lambda item: item[1], reverse=True))
     dados = {chave: valor for chave, valor in dados.items() if valor > 0}
     dados = list(dados.keys())
+    print (dados)
     # Seleciona os 10 primeiros elementos da lista
     if len(dados) > 10:
         dados = dados[:10]

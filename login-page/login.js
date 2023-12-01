@@ -20,7 +20,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     .then(data => {
         if (data.confirmacao) {
             // Login bem-sucedido, redirecione para a página de administrador
-            if (email === 'admin@gmail.com' && password === '123456') {
+            if (email === 'admin@gmail.com' && password === 'admin') {
                 window.location.href = '../admin-page/admin.html';
             } else {
                 // Trate aqui o redirecionamento para a página do usuário normal

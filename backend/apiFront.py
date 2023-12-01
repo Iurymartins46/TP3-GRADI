@@ -62,7 +62,7 @@ def adicionarFilme():
     dicionario = dict() 
     dicionario ["id"] = id
     dicionario ["titulo"]= titulo
-    dicionario ["generos"] = [{'id': idx, 'name': genero} for idx, genero in enumerate(generos)]
+    dicionario ["generos"] = [{'id': idx, 'name': genero} for idx, genero in len(generos)]
     dicionario ["orcamento"]= orcamento
     dicionario ["receita"]= receita
     dicionario ["data_lancamento"]= data_lancamento

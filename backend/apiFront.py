@@ -40,8 +40,6 @@ def pesquisarFilme(string):
     pesquisa = string.lower()
     servicos = Servicos()
     recebelista = servicos.pesquisarFilme(pesquisa)
-    print(recebelista)
-
     return recebelista, 200
 
 @app.route('/adicionarFilme', methods=['POST'])

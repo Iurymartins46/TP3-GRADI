@@ -27,48 +27,95 @@
         
         
         <form id="search-form">
-            <label for="title">Título:</label>
-            <input type="text" id="title" name="title" placeholder="Insira o título do filme" required>
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" name="titulo" placeholder="Insira o título do filme" required>
             
-            <label for="synopsis">Sinopse:</label>
-            <input type="text" id="synopsis" name="synopsis" placeholder="Insira a sinopse do filme" required>
+            <label for="sinopse">Sinopse:</label>
+            <input type="text" id="sinopse" name="sinopse" placeholder="Insira a sinopse do filme" required>
             
-            <label for="genres">Gêneros:</label>
-            <input type="text" id="genres" name="genres" placeholder="Insira os gêneros do filme" required>
+            <label for="generos">Gêneros:</label>
+            <input type="text" id="generos" name="generos" placeholder="Insira os gêneros do filme" required>
             
-            <label for="release_date">Data de Lançamento:</label>
-            <input type="text" id="release_date" name="release_date" placeholder="Insira a data de lançamento do filme" required>
+            <label for="data_lancamento">Data de Lançamento:</label>
+            <input type="text" id="data_lancamento" name="data_lancamento" placeholder="Insira a data de lançamento do filme" required>
             
-            <label for="duration">Duração:</label>
-            <input type="text" id="duration" name="duration" placeholder="Insira a duração do filme" required>
+            <label for="tempo_duracao">Duração:</label>
+            <input type="text" id="tempo_duracao" name="tempo_duracao" placeholder="Insira a duração do filme" required>
             
-            <label for="budget">Orçamento:</label>
-            <input type="text" id="budget" name="budget" placeholder="Insira o orçamento do filme" required>
+            <label for="orcamento">Orçamento:</label>
+            <input type="text" id="orcamento" name="orcamento" placeholder="Insira o orçamento do filme" required>
             
-            <label for="revenue">Receita:</label>
-            <input type="text" id="revenue" name="revenue" placeholder="Insira a receita do filme" required>
+            <label for="receita">Receita:</label>
+            <input type="text" id="receita" name="receita" placeholder="Insira a receita do filme" required>
             
             <label for="slogan">Slogan:</label>
             <input type="text" id="slogan" name="slogan" placeholder="Insira o slogan do filme" required>
             
-            <label for="popularity">Popularidade:</label>
-            <input type="text" id="popularity" name="popularity" placeholder="Insira a popularidade do filme" required>
+            <label for="popularidade">Popularidade:</label>
+            <input type="text" id="popularidade" name="popularidade" placeholder="Insira a popularidade do filme" required>
             
-            <label for="total_votes">Total de Votos:</label>
-            <input type="text" id="total_votes" name="total_votes" placeholder="Insira o total de votos do filme" required>
+            <label for="total_votos">Total de Votos:</label>
+            <input type="text" id="total_votos" name="total_votos" placeholder="Insira o total de votos do filme" required>
             
-            <label for="media_votes">Média de Votos:</label>
-            <input type="text" id="media_votes" name="media_votes" placeholder="Insira a média de votos do filme" required>
+            <label for="media_votos">Média de Votos:</label>
+            <input type="text" id="media_votos" name="media_votos" placeholder="Insira a média de votos do filme" required>
             
-            <label for="poster_link">Link do Pôster:</label>
-            <input type="text" id="poster_link" name="poster_link" placeholder="Insira o link do pôster do filme" required>
+            <label for="poster_path">Link do Pôster:</label>
+            <input type="text" id="poster_path" name="poster_path" placeholder="Insira o link do pôster do filme" required>
             
-            <button type="submit">Salvar Informações</button>
+            <button type="button" id="submitBtn" onclick="enviar()">Enviar</button>
         </form>
 
 
     </div>
     
-    <script src="admin.js"></script>
+    <script>
+        function  enviar() {
+            const id = 0;
+            const titulo = document.getElementById('titulo').value;
+            const generos = document.getElementById('generos').value;
+            const orcamento = document.getElementById('orcamento').value;
+            const receita = document.getElementById('receita').value;
+            const data_lancamento = document.getElementById('data_lancamento').value;
+            const tempo_duracao = document.getElementById('tempo_duracao').value;
+            const slogan = document.getElementById('slogan').value;
+            const popularidade = document.getElementById('popularidade').value;
+            const total_votos = document.getElementById('total_votos').value;
+            const media_votos = document.getElementById('media_votos').value;
+            const poster_path = document.getElementById('poster_path').value;
+            const sinopse = document.getElementById('sinopse').value;
+
+
+            const movieData = {
+                id: 0,
+                titulo:titulo,
+                generos:generos,
+                orcamento: orcamento,
+                receita: receita,
+                data_lancamento: data_lancamento,
+                tempo_duracao: tempo_duracao,
+                slogan: slogan,
+                popularidade: popularidade,
+                total_votos: total_votos,
+                media_votos: media_votos,
+                poster_path: poster_path,
+                sinopse: sinopse
+            };
+
+            fetch('http://localhost:5000/adicionarFilme', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(movieData)
+            })
+            .then(response => response.json())
+            .then(data => console.log('Movie added successfully:', data))
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+        }
+    </script>
 </body>
 </html>

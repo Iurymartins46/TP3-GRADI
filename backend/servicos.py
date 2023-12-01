@@ -60,12 +60,7 @@ class Servicos:
             #inicializar a chave vazia para dps adicionar
             teste[id_filme] = []
             teste[id_filme].append(sinopse)
-            #print(id)
-
-
         indice = IndiceInvertido(teste)
-
-        #print(type(indice.invIndex))
         dataBase.inserirIndiceInvertido(indice.invIndex)
 
     def removerCaracteresEspeciais(self, texto):

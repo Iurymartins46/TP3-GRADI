@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from servicos import Servicos
+from manipularDataBase import ManipularDataBase
 
 app = Flask(__name__)
 CORS(app) 
@@ -17,13 +18,6 @@ def criarNovoUsuario():
         "confirmacao": confirmacao,
         "usuario_id": idUsr
     }
-    
-    '''
-    dicionario = dict() 
-    dicionario ["confirmacao"] = confirmacao
-    dicionario ["usuario_id"] = idUsr '''
-
-
     return data, 200
 
 
@@ -41,17 +35,17 @@ def realizarLogin():
     return data, 200
 
 
-@app.route('/pesquisarFilme', methods=['GET'])
-def pesquisarFilme():
-    string = request.json.get("string")
+@app.route('/pesquisarFilme/<string>', methods=['GET'])
+def pesquisarFilme(string):
+    pesquisa = string.lower()
     servicos = Servicos()
-    recebelista = servicos.pesquisarFilme(string=string)
+    recebelista = servicos.pesquisarFilme(pesquisa)
     return recebelista, 200
 
 @app.route('/adicionarFilme', methods=['POST'])
 def adicionarFilme():
     servicos = Servicos()
-    id = request.json.get("id")
+    id = 0
     titulo = request.json.get("titulo")
     generos = request.json.get("generos")
     orcamento = request.json.get("orcamento")
@@ -86,4 +80,6 @@ def adicionarFilme():
     return dados, 200
 
 if __name__ == '__main__':
+    manipularDataBase = ManipularDataBase()
+    confirmacao_db = criarDatabase = manipularDataBase.criarDataBase()
     app.run(debug=True)

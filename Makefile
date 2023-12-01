@@ -3,5 +3,6 @@ start_basex_server_windows:
 
 run_app:
 	@python app.py
+	
 runApi:
 	python .\backend\apiFront.py
